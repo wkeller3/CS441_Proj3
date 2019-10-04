@@ -12,13 +12,14 @@ import GameplayKit
 class GameScene: SKScene {
     
     var player: SKSpriteNode!;
-//    var player: SKShapeNode!;
+    //var player: SKShapeNode!;
     var floor: SKSpriteNode!;
     var flag:Bool = false;
     let cam = SKCameraNode();
     
     override func didMove(to view: SKView){
-        createPlayer();
+        //createPlayer();
+        createCar();
         createSceneContents();
         createGround();
         self.camera = cam;
@@ -42,19 +43,12 @@ class GameScene: SKScene {
     }
     
     func createPlayer(){
-//        player = SKShapeNode(circleOfRadius: 25);
-//        player.fillColor = (UIColor.green);
-//        player.physicsBody = SKPhysicsBody(circleOfRadius: 25);
-        player = SKSpriteNode(color: UIColor.green, size: CGSize.init(width: 50, height: 50));
-        player.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 50, height: 50));
-        player.zPosition = 10;
-        player.position = CGPoint(x: frame.width/6, y: frame.height * 0.25);
-        player.physicsBody?.affectedByGravity = true;
-        
-        //add textures and animate through them
-        //then repeatForever through them
-    
-        addChild(player)
+        //player = SKSpriteNode(color: UIColor.green, size: CGSize.init(width: 50, height: 50));
+//        player.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 50, height: 50));
+//        player.zPosition = 10;
+//        player.position = CGPoint(x: frame.width/6, y: frame.height * 0.25);
+//        player.physicsBody?.affectedByGravity = true;
+//        addChild(player)
         
     }
 
@@ -65,10 +59,6 @@ class GameScene: SKScene {
     }
     
     func createGround(){
-//        let ground = SKSpriteNode(color: UIColor.brown, size: CGSize.init(width: 900, height: 20));
-//        ground.position = CGPoint(x: 450, y: 0);
-//        ground.zPosition = -10;
-//        ground.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 900, height: 20));
         let groundTexture = SKTexture(imageNamed: "ground2");
         let ground = SKSpriteNode(texture: groundTexture);
         ground.position = CGPoint(x: groundTexture.size().width/2.0, y: groundTexture.size().height/2);
@@ -76,6 +66,19 @@ class GameScene: SKScene {
         ground.physicsBody?.affectedByGravity = false;
         ground.physicsBody?.isDynamic = false;
         addChild(ground);
+    }
+    
+    func createCar(){
+        player = SKSpriteNode(imageNamed: "car");
+        let wheel = SKSpriteNode(imageNamed: "wheel");
+        player.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 50, height: 24));//24
+        wheel.physicsBody = SKPhysicsBody(circleOfRadius: 7);
+        player.position = CGPoint(x: frame.width/6, y: frame.height * 0.25);
+        wheel.position = CGPoint(x: frame.width/6, y: frame.height * 0.25);
+        addChild(player);
+        addChild(wheel);
+        let joint = SKPhysicsJointPin.joint(withBodyA: player.physicsBody!, bodyB: wheel.physicsBody!, anchor: CGPoint(x: CGRect(x: frame.width/6, y: frame.height * 0.25, width: 50, height: 24).maxX, y: CGRect(x: frame.width/6, y: frame.height * 0.25, width: 50, height: 24).maxY));
+        physicsWorld.add(joint);
     }
     
 }

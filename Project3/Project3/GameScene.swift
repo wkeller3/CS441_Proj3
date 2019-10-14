@@ -12,7 +12,8 @@ import GameplayKit
 class GameScene: SKScene {
     
     var player: SKSpriteNode!;
-    //var player: SKShapeNode!;
+    var wheel: SKSpriteNode!;
+    var wheel2: SKSpriteNode!;
     var floor: SKSpriteNode!;
     var flag:Bool = false;
     let cam = SKCameraNode();
@@ -37,7 +38,11 @@ class GameScene: SKScene {
     
     override func update(_ currentTime: TimeInterval) {
         if(flag){
-            player.physicsBody?.applyImpulse(CGVector.init(dx:5,dy:0));
+            //player.physicsBody?.applyImpulse(CGVector.init(dx:5,dy:0));
+            
+            wheel.physicsBody?.applyAngularImpulse(CGFloat(00.001));
+            wheel2.physicsBody?.applyAngularImpulse(CGFloat(0.001));
+            
         }
         cam.position = CGPoint(x: player.position.x + 200, y: player.position.y);
     }
@@ -69,16 +74,48 @@ class GameScene: SKScene {
     }
     
     func createCar(){
+//        player = SKSpriteNode(imageNamed: "car");
+//        wheel = SKSpriteNode(imageNamed: "wheel");
+//        wheel2 = SKSpriteNode(imageNamed: "wheel");
+//        player.position = CGPoint(x: frame.width/6, y: frame.height * 0.25);
+//        wheel.position = CGPoint(x: frame.width/6-15, y: frame.height * 0.25);
+//        wheel2.position = CGPoint(x: frame.width/6+15, y: frame.height * 0.25);
+//        player.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 50, height: 24));
+//        wheel.physicsBody = SKPhysicsBody(circleOfRadius: 7);
+//        wheel2.physicsBody = SKPhysicsBody(circleOfRadius: 7);
+//
+//        addChild(player);
+//        addChild(wheel);
+//        addChild(wheel2);
+//
+//        let joint = SKPhysicsJointPin.joint(withBodyA: player.physicsBody!, bodyB: wheel.physicsBody!, anchor: wheel.position);
+//        let joint2 = SKPhysicsJointPin.joint(withBodyA: player.physicsBody!, bodyB: wheel2.physicsBody!, anchor: wheel2.position);
+//
+//
+//
+//        physicsWorld.add(joint);
+//        physicsWorld.add(joint2);
+        
         player = SKSpriteNode(imageNamed: "car");
-        let wheel = SKSpriteNode(imageNamed: "wheel");
-        player.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 50, height: 24));//24
-        wheel.physicsBody = SKPhysicsBody(circleOfRadius: 7);
         player.position = CGPoint(x: frame.width/6, y: frame.height * 0.25);
-        wheel.position = CGPoint(x: frame.width/6, y: frame.height * 0.25);
+        player.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 50, height: 24));
+        wheel = SKSpriteNode(imageNamed: "wheel");
+        wheel.position = CGPoint(x: frame.width/6-15, y: frame.height * 0.25);
+        wheel.physicsBody = SKPhysicsBody(circleOfRadius: 7);
+        wheel2 = SKSpriteNode(imageNamed: "wheel");
+        wheel2.position = CGPoint(x: frame.width/6+15, y: frame.height * 0.25);
+        wheel2.physicsBody = SKPhysicsBody(circleOfRadius: 7);
+        
+       
+        
+        player.addChild(wheel);
+        player.addChild(wheel2);
+        
+        player.physicsBody?.pinned = true;
+        
         addChild(player);
-        addChild(wheel);
-        let joint = SKPhysicsJointPin.joint(withBodyA: player.physicsBody!, bodyB: wheel.physicsBody!, anchor: CGPoint(x: CGRect(x: frame.width/6, y: frame.height * 0.25, width: 50, height: 24).maxX, y: CGRect(x: frame.width/6, y: frame.height * 0.25, width: 50, height: 24).maxY));
-        physicsWorld.add(joint);
+        
+        
     }
     
 }

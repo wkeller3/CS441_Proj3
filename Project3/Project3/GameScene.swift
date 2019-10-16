@@ -16,16 +16,14 @@ class GameScene: SKScene {
     var wheel2: SKSpriteNode!;
     var floor: SKSpriteNode!;
     var flag:Bool = false;
+    var location:Bool = true;
     let cam = SKCameraNode();
-    
-    var connecter1: SKSpriteNode!;
-    var connecter2: SKSpriteNode!;
     
     override func didMove(to view: SKView){
         //createPlayer();
+        createSceneContents();
         createGround();
         createCar();
-        createSceneContents();
         self.camera = cam;
     }
 
@@ -41,7 +39,7 @@ class GameScene: SKScene {
     
     override func update(_ currentTime: TimeInterval) {
         if(flag){
-            player.physicsBody?.applyImpulse(CGVector.init(dx:5,dy:3));
+            player.physicsBody?.applyImpulse(CGVector.init(dx:6,dy:3));
             
 //            wheel.physicsBody?.applyAngularImpulse(CGFloat(00.001));
 //            wheel2.physicsBody?.applyAngularImpulse(CGFloat(0.001));
@@ -68,9 +66,9 @@ class GameScene: SKScene {
     }
     
     func createGround(){
-        let groundTexture = SKTexture(imageNamed: "ground2");
+        let groundTexture = SKTexture(imageNamed: "ground");
         let ground = SKSpriteNode(texture: groundTexture);
-        ground.position = CGPoint(x: groundTexture.size().width/2.0, y: groundTexture.size().height/2);
+        ground.position = CGPoint(x: (groundTexture.size().width/2.0), y: groundTexture.size().height/2);
         ground.physicsBody = SKPhysicsBody(texture: groundTexture, size: groundTexture.size());
         ground.physicsBody?.affectedByGravity = false;
         ground.physicsBody?.isDynamic = false;
@@ -81,23 +79,12 @@ class GameScene: SKScene {
         player = SKSpriteNode(imageNamed: "car");
         wheel = SKSpriteNode(imageNamed: "wheel");
         wheel2 = SKSpriteNode(imageNamed: "wheel");
-        player.position = CGPoint(x: frame.width/6, y: frame.height * 0.5);
-        wheel.position = CGPoint(x: frame.width/6-15, y: frame.height * 0.5);
-        wheel2.position = CGPoint(x: frame.width/6+15, y: frame.height * 0.5);
+        player.position = CGPoint(x: frame.width/6, y: frame.height * 0.6);
+        wheel.position = CGPoint(x: frame.width/6-15, y: frame.height * 0.6);
+        wheel2.position = CGPoint(x: frame.width/6+15, y: frame.height * 0.6);
         player.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 50, height: 24));
         wheel.physicsBody = SKPhysicsBody(circleOfRadius: 7);
         wheel2.physicsBody = SKPhysicsBody(circleOfRadius: 7);
-        
-//        connecter1 = SKSpriteNode(color: UIColor.black, size: CGSize.init(width: 5, height: 10));
-//        connecter1.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 50, height: 24));
-//        connecter1.position = CGPoint(x: frame.width/6-15, y: frame.height * 0.3);
-//        connecter2 = SKSpriteNode(color: UIColor.black, size: CGSize.init(width: 5, height: 10));
-//        connecter2.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 50, height: 24));
-//        connecter2.position = CGPoint(x: frame.width/6+15, y: frame.height * 0.3);
-        
-        wheel.physicsBody?.allowsRotation = true;
-        wheel2.physicsBody?.allowsRotation = true;
-        
 
         addChild(player);
         addChild(wheel);
@@ -105,9 +92,6 @@ class GameScene: SKScene {
 
         let joint = SKPhysicsJointPin.joint(withBodyA: player.physicsBody!, bodyB: wheel.physicsBody!, anchor: wheel.position);
         let joint2 = SKPhysicsJointPin.joint(withBodyA: player.physicsBody!, bodyB: wheel2.physicsBody!, anchor: wheel2.position);
-
-        joint.frictionTorque = 0.2;
-        joint2.frictionTorque = 0.2;
 
         physicsWorld.add(joint);
         physicsWorld.add(joint2);
